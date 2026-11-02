@@ -1,0 +1,50 @@
+{
+  "format": 2,
+  "built": "2026-11-02T19:22:37.876Z",
+  "count": 20000,
+  "options": {
+    "limit": 20000,
+    "freq": "full",
+    "maxGlosses": 3,
+    "maxGlossLen": 70,
+    "chunkKb": 512
+  },
+  "attribution": {
+    "text": "Definitions from Wiktionary (https://en.wiktionary.org), extracted by kaikki.org / Wiktextract. Licensed CC BY-SA 4.0 and GFDL. Word frequency ranking from hermitdave/FrequencyWords (OpenSubtitles 2018), CC BY-SA 4.0.",
+    "license": "CC BY-SA 4.0",
+    "sources": [
+      "https://kaikki.org/dictionary/Finnish/kaikki.org-dictionary-Finnish.jsonl.gz",
+      "https://raw.githubusercontent.com/hermitdave/FrequencyWords/master/content/2018/fi/fi_full.txt"
+    ]
+  },
+  "files": {
+    "o": "fi-en.o.json",
+    "e": "fi-en.e.json",
+    "s": "fi-en.s.json",
+    "h": "fi-en.h.json",
+    "m": "fi-en.m.json",
+    "j": "fi-en.j.json",
+    "t": "fi-en.t.json",
+    "n": "fi-en.n.json",
+    "p": "fi-en.p.json",
+    "v": "fi-en.v.json",
+    "k": "fi-en.k.json",
+    "a": "fi-en.a.json",
+    "y": "fi-en.y.json",
+    "i": "fi-en.i.json",
+    "l": "fi-en.l.json",
+    "ae": "fi-en.ae.json",
+    "r": "fi-en.r.json",
+    "u": "fi-en.u.json",
+    "d": "fi-en.d.json",
+    "f": "fi-en.f.json",
+    "b": "fi-en.b.json",
+    "w": "fi-en.w.json",
+    "c": "fi-en.c.json",
+    "oe": "fi-en.oe.json",
+    "z": "fi-en.z.json",
+    "g": "fi-en.g.json",
+    "q": "fi-en.q.json",
+    "_": "fi-en._.json"
+  }
+}

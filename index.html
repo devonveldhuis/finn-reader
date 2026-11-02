@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lukija</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/" class="brand">Lukija <span>· read first, translate later</span></a>
+    <nav id="topnav"></nav>
+  </header>
+  <main id="app"></main>
+
+  <!-- Floating action shown when text is selected in the reader -->
+  <div id="selpop" class="popover" hidden>
+    <button data-act="mark">Mark for later <kbd>H</kbd></button>
+  </div>
+  <!-- Word lookup card: shown when clicking a mark, or a word on the compare page -->
+  <div id="hlpop" class="popover lookup" hidden></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
