@@ -148,7 +148,10 @@ select { width: auto; padding: 4px 8px; font-size: 13px; }
 .marklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
 .marklist li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto; gap: 10px; align-items: center;
   padding: 6px 8px; border-radius: 8px; border: 1px solid transparent; }
-.marklist li.flash { border-color: var(--mark-line); }
+/* Hovered mark: its list row and its mark in the text light up together. */
+.marklist li { transition: background .12s, border-color .12s; }
+.marklist li:hover, .marklist li.hover { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); border-color: var(--accent); }
+.text mark.hover { background: color-mix(in srgb, var(--accent) 30%, transparent); border-bottom-color: var(--accent); }
 .marklist .fi { font: 600 15px var(--read); }
 .marklist input.note { width: 100%; font: 14px var(--ui); color: var(--ink); background: transparent; border: 0;
   border-bottom: 1px dashed var(--line); padding: 4px 2px; }

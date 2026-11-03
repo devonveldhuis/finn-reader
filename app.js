@@ -506,7 +506,9 @@ function renderCompare(ch, attemptIdx) {
           <h4>Feedback from Claude</h4>
           <div id="ai">${at.ai ? aiHtml(at.ai) : hasKey
             ? `<p class="muted small">Claude reads the original, compares it with your recall, and points out what you got right, what you missed and what you misread.</p><button class="btn" id="askAi">Check my recall</button>`
-            : `<p class="muted small">Optional: add an Anthropic API key in <a href="#/settings">Settings</a> to get automatic feedback on your recall.</p>`}</div>
+            : `<p class="muted small">Copy a ready-made prompt with the chapter and your recall, then paste it into a Claude chat to get it graded.
+               Or add an Anthropic API key in <a href="#/settings">Settings</a> to get feedback right here.</p>`}</div>
+          <div class="row"><button class="btn${hasKey ? ' ghost' : ''}" id="copyPrompt">Copy grading prompt</button><span id="copied" class="muted small"></span></div>
 
           <h4>Marked in this chapter (${marks.length})</h4>
           ${marks.length ? `<ul class="marklist">${marks.map(markRow).join('')}</ul>` : '<p class="muted small">You didn\'t mark anything. Select text on the right to mark it now.</p>'}
@@ -533,11 +535,59 @@ function renderCompare(ch, attemptIdx) {
       app.querySelector('#ai').innerHTML = `<p class="error">${esc(err.message)}</p>`;
     }
   });
+  app.querySelector('#copyPrompt').addEventListener('click', async () => {
+    const ok = await copyText(gradingPrompt(ch, at.text));
+    const msg = app.querySelector('#copied');
+    msg.textContent = ok ? 'Copied. Paste it into a Claude chat.' : 'Couldn’t access the clipboard.';
+    setTimeout(() => { msg.textContent = ''; }, 4000);
+  });
   bindMarkRows(app, () => renderCompare(ch, ai));
   bindMarking(app.querySelector('#text'), ch, () => renderCompare(ch, ai), { wordLookup: true });
-  app.querySelectorAll('#text mark').forEach(m => m.addEventListener('mouseenter', () => {
-    app.querySelector(`.marklist li[data-hid="${m.dataset.hid}"]`)?.classList.add('flash');
-  }));
+  // Hovering a mark list row or a mark in the text highlights both, so it's clear which is which.
+  const setHover = (hid, on) => app.querySelectorAll(`.marklist li[data-hid="${hid}"], #text mark[data-hid="${hid}"]`)
+    .forEach(el => el.classList.toggle('hover', on));
+  app.querySelectorAll('.marklist li[data-hid], #text mark[data-hid]').forEach(el => {
+    el.addEventListener('mouseenter', () => setHover(el.dataset.hid, true));
+    el.addEventListener('mouseleave', () => setHover(el.dataset.hid, false));
+  });
+}
+
+// Prompt for pasting into a Claude chat when there's no API key.
+function gradingPrompt(ch, recall) {
+  return `I'm learning Finnish by reading easy-Finnish (selkokieli) stories from start to finish without stopping to translate, working out the meaning from context. After reading the chapter below once, I wrote down from memory what I think happened.
+
+Please grade how well I understood it. I'm only aiming for the gist: who is in it, where it happens, what happens and how it ends. Don't mark me down for missing small details or for my wording, and don't correct my English or Finnish.
+
+Please give me:
+1. A score out of 100 for how well I got the gist
+2. What I understood correctly
+3. Important things I missed or misunderstood, with the Finnish word or phrase that probably confused me and what it means
+4. A short summary in English of what actually happens
+5. One or two words or phrases from the text that would be most useful to learn next
+
+<chapter title="${cache.book.chapters[ch].title}">
+${chText(ch)}
+</chapter>
+
+<my_recall>
+${recall}
+</my_recall>`;
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // Fallback for browsers or contexts without the async clipboard API.
+    const ta = Object.assign(document.createElement('textarea'), { value: text });
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.append(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  }
 }
 
 function markRow(m) {
